@@ -104,9 +104,10 @@ router.post('', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
     try {
+        // console.log("This got hit")
         // Go look for a book in the database whose _id matches the URL params that I'm being passed and update to the req.body coming in from a request
         const updatedBook = await Books.findByIdAndUpdate(req.params.id, req.body);
-        res.redirect(`/books/${req.params.id}`);
+        res.json(updatedBook);
     } catch(err) {
         console.log(err);
         next();
