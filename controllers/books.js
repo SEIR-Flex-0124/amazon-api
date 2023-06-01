@@ -46,8 +46,7 @@ router.get('', async (req, res, next) => {
 router.get('/seed', async (req, res, next) => {
     try {
         await Books.deleteMany({});
-        await Books.insertMany(seededData);
-        res.redirect('/books');
+        res.json(await Books.insertMany(seededData));
     } catch(err) {
         console.log(err);
         next();
@@ -79,10 +78,19 @@ router.get('/:id', async (req, res, next) => {
 router.post('/:id/comments', async (req, res, next) => {
     try {
         let newComment = req.body;
-        newComment.user = req.session.currentUser.id;
+        // newComment.user = req.session.currentUser.id;
         newComment.book = req.params.id;
-        await Comments.create(newComment);
-        res.redirect(`/books/${req.params.id}`);
+        res.json(await Comments.create(newComment));
+    } catch(err) {
+        console.log(err);
+        next();
+    }
+})
+
+router.get('/:id/comments', async (req, res, next) => {
+    try {
+        const booksComments = await Comments.find({book: req.params.id});
+        res.json(booksComments);
     } catch(err) {
         console.log(err);
         next();
@@ -94,8 +102,8 @@ router.post('', async (req, res, next) => {
         const newBook = req.body
         // newBook.user = req.session.currentUser.id;
         await Books.create(req.body);
-        console.log(newBook);
-        res.redirect('/books')
+        // console.log(newBook);
+        res.json(newBook)
     } catch(err) {
         console.log(err);
         next();

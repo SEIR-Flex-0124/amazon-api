@@ -13,8 +13,8 @@ const commentSchema = new mongoose.Schema(
             trim: true
         },
         user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user'
+            type: String,
+            required: [true, "Please make sure to provide a user"]
         },
         book: {
             type: mongoose.Schema.Types.ObjectId,
